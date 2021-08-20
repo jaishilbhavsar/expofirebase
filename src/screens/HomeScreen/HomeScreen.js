@@ -43,7 +43,10 @@ function HomeScreen({ navigation }) {
         <Card>
           <Card.Content>
             <Title>{item.title}</Title>
-            <Paragraph>{item.full_description}</Paragraph>
+            <Paragraph>Description: {item.full_description}</Paragraph>
+            <Paragraph>Cost: {item.cost}</Paragraph>
+            <Paragraph>Location: {item.location}</Paragraph>
+            <Paragraph>Date: {item.date}</Paragraph>
           </Card.Content>
           <Card.Cover source={{ uri: item.featured_image }} />
           <Card.Actions>
