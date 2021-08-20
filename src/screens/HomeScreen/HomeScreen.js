@@ -19,10 +19,12 @@ function HomeScreen({ navigation }) {
       let oEntities = querySnapshot.val();
       try {
         Object.keys(oEntities).map((key) => {
-          const oEntity = oEntities[key];
-          console.log(oEntity);
-          oEntity.id = key;
-          aNewEntities.push(oEntity)
+          if (key != 'users') {
+            const oEntity = oEntities[key];
+            console.log(oEntity);
+            oEntity.id = key;
+            aNewEntities.push(oEntity)
+          }
         });
       } catch (e) {
         console.log(e.toString())
@@ -45,9 +47,9 @@ function HomeScreen({ navigation }) {
           </Card.Content>
           <Card.Cover source={{ uri: item.featured_image }} />
           <Card.Actions>
-            <Button onPress={() => navigation.navigate('Details', {item})}>Edit</Button>
+            <Button onPress={() => navigation.navigate('Details', { item })}>Edit</Button>
             <Button onPress={() => {
-              if(item.id) firebase.database().ref('meals/' + item.id).remove();
+              if (item.id) firebase.database().ref('meals/' + item.id).remove();
             }}>Delete</Button>
           </Card.Actions>
         </Card>
@@ -80,10 +82,10 @@ function HomeScreen({ navigation }) {
 
 function DetailsScreen({ route, navigation }) {
 
-  let item={}
-  try{
+  let item = {}
+  try {
     item = route.params.item;
-  }catch(e){
+  } catch (e) {
     console.log(e.message);
   }
   console.log(item);
@@ -92,7 +94,10 @@ function DetailsScreen({ route, navigation }) {
       title: item.title,
       meta_description: item.meta_description,
       full_description: item.full_description,
-      featured_image: item.featured_image
+      featured_image: item.featured_image,
+      location: item.location,
+      cost: item.cost,
+      date: item.date,
     },
 
     mode: 'onChange',
@@ -121,6 +126,7 @@ function DetailsScreen({ route, navigation }) {
                   message: 'Title is required',
                 },
               },
+
 
               textInputProps: {
                 keyboardType: 'default',
@@ -184,6 +190,63 @@ function DetailsScreen({ route, navigation }) {
                 autoCapitalize: 'none',
               },
             },
+            {
+              type: 'input',
+
+              name: 'location',
+
+              label: 'location',
+
+              rules: {
+                required: {
+                  value: false,
+                },
+              },
+
+              textInputProps: {
+                keyboardType: 'default',
+
+                autoCapitalize: 'none',
+              },
+            },
+            {
+              type: 'input',
+
+              name: 'cost',
+
+              label: 'cost',
+
+              rules: {
+                required: {
+                  value: false,
+                },
+              },
+
+              textInputProps: {
+                keyboardType: 'default',
+
+                autoCapitalize: 'none',
+              },
+            },
+            {
+              type: 'input',
+
+              name: 'date',
+
+              label: 'date',
+
+              rules: {
+                required: {
+                  value: false,
+                },
+              },
+
+              textInputProps: {
+                keyboardType: 'default',
+
+                autoCapitalize: 'none',
+              },
+            },
 
           ]}>
           <Button
@@ -191,8 +254,8 @@ function DetailsScreen({ route, navigation }) {
             onPress={form.handleSubmit((data) => {
               console.log('form data', data);
               let entityID = new Date().toISOString().replace(".", "_");
-              try{
-                if(item.id) entityID = item.id;
+              try {
+                if (item.id) entityID = item.id;
                 firebase.database().ref('meals/' + entityID).set(data)
                   .then(_doc => {
                     Keyboard.dismiss();
@@ -201,7 +264,7 @@ function DetailsScreen({ route, navigation }) {
                   .catch((error) => {
                     alert(error)
                   });
-              }catch(e){
+              } catch (e) {
                 console.log(e.message);
               }
 
@@ -215,7 +278,7 @@ function DetailsScreen({ route, navigation }) {
 
 const Stack = createStackNavigator();
 
-export default function(){
+export default function () {
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={HomeScreen} />
@@ -224,4 +287,4 @@ export default function(){
   );
 }
 
- 
+

@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "mar21react-native-firebase",
+    "description": "React Native App.",
     "slug": "mar21react-native-firebase",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,6 +21,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.jaishilbhavsar.expofirebase",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
